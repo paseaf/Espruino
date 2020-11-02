@@ -24,6 +24,13 @@
 #include "jswrap_puck.h" // process.env
 #endif
 
+#ifdef ESP32
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "heap/include/esp_heap_caps.h"
+#include "heap/include/multi_heap.h"
+#endif
+
 /*JSON{
   "type" : "class",
   "class" : "process"
@@ -178,6 +185,12 @@ JsVar *jswrap_process_memory() {
     jsvObjectSetChildAndUnLock(obj, "gc", jsvNewFromInteger((JsVarInt)gc));
     jsvObjectSetChildAndUnLock(obj, "gctime", jsvNewFromFloat(jshGetMillisecondsFromTime(time2-time1)));
     jsvObjectSetChildAndUnLock(obj, "blocksize", jsvNewFromInteger(sizeof(JsVar)));
+    jsvObjectSetChildAndUnLock(obj, "uxTaskGetStackHighWaterMark", jsvNewFromInteger(uxTaskGetStackHighWaterMark(NULL)));
+    jsvObjectSetChildAndUnLock(obj, "xPortGetFreeHeapSize", jsvNewFromInteger(xPortGetFreeHeapSize()));
+    jsvObjectSetChildAndUnLock(obj, "heap_caps_get_largest_free_block", jsvNewFromInteger(heap_caps_get_largest_free_block(MALLOC_CAP_8BIT)));
+    jsvObjectSetChildAndUnLock(obj, "xPortGetMinimumEverFreeHeapSize", jsvNewFromInteger(xPortGetMinimumEverFreeHeapSize()));
+    jsvObjectSetChildAndUnLock(obj, "multi_heap_free_size", jsvNewFromInteger(multi_heap_free_size()));
+
 
 #ifdef ARM
     extern uint32_t LINKER_END_VAR; // end of ram used (variables) - should be 'void', but 'int' avoids warnings
