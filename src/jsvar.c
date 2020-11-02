@@ -128,8 +128,12 @@ bool jsvIsIterable(const JsVar *v) {
 // ----------------------------------------------------------------------------
 
 
-/** Return a pointer - UNSAFE for null refs.
- * This is effectively a Lock without locking! */
+ /** Return a pointer - UNSAFE for null refs.
+  * This is effectively a Lock without locking!
+  *
+  * @param ref - ordinal number of the jsVar in jsVars[]
+  * @return address of the given JsVar reference
+  */
 static ALWAYS_INLINE JsVar *jsvGetAddressOf(JsVarRef ref) {
   assert(ref);
 #ifdef RESIZABLE_JSVARS
@@ -301,13 +305,17 @@ JsVar *jsvFindOrCreateRoot() {
   return jsvRef(jsvNewWithFlags(JSV_ROOT));
 }
 
-/// Get number of memory records (JsVars) used
+/**
+ * Get the currently used number of JsVars
+ * @return
+ */
 unsigned int jsvGetMemoryUsage() {
   unsigned int usage = 0;
+  // iterate through each jsVar
   for (unsigned int i=1;i<=jsVarsSize;i++) {
-    JsVar *v = jsvGetAddressOf((JsVarRef)i);
+    JsVar *v = jsvGetAddressOf((JsVarRef)i); // value of the current JsVar
     if ((v->flags&JSV_VARTYPEMASK) != JSV_UNUSED) {
-      usage++;
+      usage++; // add 1 block to the JsVar
       if (jsvIsFlatString(v)) {
         unsigned int b = (unsigned int)jsvGetFlatStringBlocks(v);
         i+=b;
