@@ -45,6 +45,10 @@ extern void jshSoftInit(void);    // re-inits wifi after a soft-reset
 #endif
 
 #ifdef ESP32
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "heap/include/esp_heap_caps.h"
+#include "heap/include/multi_heap.h"
 extern void jshSoftInit(void);
 #endif
 
@@ -849,6 +853,11 @@ void jsiSemiInit(bool autoLoad) {
 #ifdef USE_TERMINAL
     if (consoleDevice != EV_TERMINAL) // don't spam the terminal
 #endif
+      jsiConsolePrintf("stackHWM %d\n", uxTaskGetStackHighWaterMark(NULL));
+      jsiConsolePrintf("stackUsed %d\n", 25000 - uxTaskGetStackHighWaterMark(NULL));
+      jsiConsolePrintf("freeHeap %d\n", xPortGetFreeHeapSize());
+      jsiConsolePrintf("largest_free_block %d\n", heap_caps_get_largest_free_block(MALLOC_CAP_8BIT));
+      jsiConsolePrintf("minEverFreeHeap %d\n", xPortGetMinimumEverFreeHeapSize());
       jsiConsolePrint("\n"); // output new line
     inputLineRemoved = true; // we need to put the input line back...
   }

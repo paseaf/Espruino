@@ -178,18 +178,17 @@ JsVar *jswrap_process_memory() {
     }
     unsigned int usage = jsvGetMemoryUsage() - history;
     unsigned int total = jsvGetMemoryTotal();
-    jsvObjectSetChildAndUnLock(obj, "free", jsvNewFromInteger((JsVarInt)(total-usage)));
-    jsvObjectSetChildAndUnLock(obj, "usage", jsvNewFromInteger((JsVarInt)usage));
-    jsvObjectSetChildAndUnLock(obj, "total", jsvNewFromInteger((JsVarInt)total));
-    jsvObjectSetChildAndUnLock(obj, "history", jsvNewFromInteger((JsVarInt)history));
-    jsvObjectSetChildAndUnLock(obj, "gc", jsvNewFromInteger((JsVarInt)gc));
-    jsvObjectSetChildAndUnLock(obj, "gctime", jsvNewFromFloat(jshGetMillisecondsFromTime(time2-time1)));
-    jsvObjectSetChildAndUnLock(obj, "blocksize", jsvNewFromInteger(sizeof(JsVar)));
-    jsvObjectSetChildAndUnLock(obj, "uxTaskGetStackHighWaterMark", jsvNewFromInteger(uxTaskGetStackHighWaterMark(NULL)));
-    jsvObjectSetChildAndUnLock(obj, "xPortGetFreeHeapSize", jsvNewFromInteger(xPortGetFreeHeapSize()));
-    jsvObjectSetChildAndUnLock(obj, "heap_caps_get_largest_free_block", jsvNewFromInteger(heap_caps_get_largest_free_block(MALLOC_CAP_8BIT)));
-    jsvObjectSetChildAndUnLock(obj, "xPortGetMinimumEverFreeHeapSize", jsvNewFromInteger(xPortGetMinimumEverFreeHeapSize()));
-    jsvObjectSetChildAndUnLock(obj, "multi_heap_free_size", jsvNewFromInteger(multi_heap_free_size()));
+      jsvObjectSetChildAndUnLock(obj, "stackHWM", jsvNewFromInteger(uxTaskGetStackHighWaterMark(NULL)));
+      jsvObjectSetChildAndUnLock(obj, "freeHeap", jsvNewFromInteger(xPortGetFreeHeapSize()));
+      jsvObjectSetChildAndUnLock(obj, "largest_free_block", jsvNewFromInteger(heap_caps_get_largest_free_block(MALLOC_CAP_8BIT)));
+      jsvObjectSetChildAndUnLock(obj, "minEverFreeHeap", jsvNewFromInteger(xPortGetMinimumEverFreeHeapSize()));
+      jsvObjectSetChildAndUnLock(obj, "free", jsvNewFromInteger((JsVarInt)(total-usage)));
+      jsvObjectSetChildAndUnLock(obj, "usage", jsvNewFromInteger((JsVarInt)usage));
+      jsvObjectSetChildAndUnLock(obj, "total", jsvNewFromInteger((JsVarInt)total));
+      jsvObjectSetChildAndUnLock(obj, "history", jsvNewFromInteger((JsVarInt)history));
+      jsvObjectSetChildAndUnLock(obj, "gc", jsvNewFromInteger((JsVarInt)gc));
+      jsvObjectSetChildAndUnLock(obj, "gctime", jsvNewFromFloat(jshGetMillisecondsFromTime(time2-time1)));
+      jsvObjectSetChildAndUnLock(obj, "blocksize", jsvNewFromInteger(sizeof(JsVar)));
 
 
 #ifdef ARM
