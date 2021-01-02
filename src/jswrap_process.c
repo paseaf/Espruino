@@ -180,7 +180,8 @@ JsVar *jswrap_process_memory() {
     unsigned int total = jsvGetMemoryTotal();
       jsvObjectSetChildAndUnLock(obj, "stackHWM", jsvNewFromInteger(uxTaskGetStackHighWaterMark(NULL)));
       jsvObjectSetChildAndUnLock(obj, "freeHeap", jsvNewFromInteger(xPortGetFreeHeapSize()));
-      jsvObjectSetChildAndUnLock(obj, "largest_free_block", jsvNewFromInteger(heap_caps_get_largest_free_block(MALLOC_CAP_8BIT)));
+      jsvObjectSetChildAndUnLock(obj, "min_free_DRAM_heap", jsvNewFromInteger(heap_caps_get_minimum_free_size(MALLOC_CAP_8BIT)));
+      jsvObjectSetChildAndUnLock(obj, "min_free_D_IRAM_heap", jsvNewFromInteger(heap_caps_get_minimum_free_size(MALLOC_CAP_32BIT)));
       jsvObjectSetChildAndUnLock(obj, "minEverFreeHeap", jsvNewFromInteger(xPortGetMinimumEverFreeHeapSize()));
       jsvObjectSetChildAndUnLock(obj, "free", jsvNewFromInteger((JsVarInt)(total-usage)));
       jsvObjectSetChildAndUnLock(obj, "usage", jsvNewFromInteger((JsVarInt)usage));

@@ -855,9 +855,9 @@ void jsiSemiInit(bool autoLoad) {
 #endif
       jsiConsolePrintf("stackHWM %d\n", uxTaskGetStackHighWaterMark(NULL));
       jsiConsolePrintf("stackUsed %d\n", 25000 - uxTaskGetStackHighWaterMark(NULL));
-      jsiConsolePrintf("freeHeap %d\n", xPortGetFreeHeapSize());
-      jsiConsolePrintf("largest_free_block %d\n", heap_caps_get_largest_free_block(MALLOC_CAP_8BIT));
-      jsiConsolePrintf("minEverFreeHeap %d\n", xPortGetMinimumEverFreeHeapSize());
+      jsiConsolePrintf("current free heap %d\n", xPortGetFreeHeapSize());
+      jsiConsolePrintf("min free DRAM %d\n", heap_caps_get_minimum_free_size(MALLOC_CAP_8BIT));
+      jsiConsolePrintf("min free DRAM + IRAM %d\n", heap_caps_get_minimum_free_size(MALLOC_CAP_32BIT));
       jsiConsolePrint("\n"); // output new line
     inputLineRemoved = true; // we need to put the input line back...
   }
